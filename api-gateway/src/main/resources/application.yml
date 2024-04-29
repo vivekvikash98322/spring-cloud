@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/user/**
+          filters:
+            - CustomJWTFilter
+
+        - id: order-service
+          uri: http://myorderservice.us-east-1.elasticbeanstalk.com/
+          predicates:
+            - Path=/order/**, /cart/**
+          filters:
+            - CustomJWTFilter
+
+        - id: auth-service
+          uri: http://myauthserver.us-east-1.elasticbeanstalk.com/
+          predicates:
+            - Path=/auth/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone:  ${EUREKA_URI:http://3.91.211.119/eureka}
