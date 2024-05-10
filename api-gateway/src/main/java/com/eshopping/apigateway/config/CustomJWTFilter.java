@@ -1,6 +1,7 @@
 package com.eshopping.apigateway.config;
 
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -16,6 +17,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @Component
+@Slf4j
 public class CustomJWTFilter extends AbstractGatewayFilterFactory<CustomJWTFilter.Config> {
 
     private final static String ENC_KEY = "59be370adb2961ab4f0a4c71d622df9fd3750a897fb6aba4e8d7e883abcc0f0d";
@@ -29,7 +31,7 @@ public class CustomJWTFilter extends AbstractGatewayFilterFactory<CustomJWTFilte
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-
+            log.info("Gateway filter called ");
             if (unsecuredurl.stream().noneMatch(s -> s.equals(exchange.getRequest()))) {
                 //header contains token or not
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {

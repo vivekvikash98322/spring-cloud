@@ -4,6 +4,7 @@ import com.eshopping.authrizationserver.model.request.AuthenticationRequest;
 import com.eshopping.authrizationserver.model.request.RegisterUserRequest;
 import com.eshopping.authrizationserver.model.response.AuthenticationResponse;
 import com.eshopping.authrizationserver.service.AuthenticationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/auth")
+@Slf4j
 public class AuthenticationController {
 
     @Autowired
@@ -26,6 +28,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest){
+        log.info("login called");
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
 

@@ -33,6 +33,11 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'io.micrometer', name: 'micrometer-tracing', version: '1.2.5'
+	implementation group: 'io.micrometer', name: 'micrometer-tracing-bridge-brave', version: '1.2.5'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '3.2.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.2.4'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-circuitbreaker-reactor-resilience4j', version: '3.1.1'
 
 }
 

@@ -11,20 +11,45 @@ spring:
             - Path=/user/**
           filters:
             - CustomJWTFilter
-
         - id: order-service
-          uri: http://myorderservice.us-east-1.elasticbeanstalk.com/
+          uri: lb://ORDERSERVICE
           predicates:
             - Path=/order/**, /cart/**
           filters:
             - CustomJWTFilter
-
+            - name: CircuitBreaker
+              args:
+                name: orderCircuitBreaker
+                fallbackUri: forward:/exception/order
         - id: auth-service
-          uri: http://myauthserver.us-east-1.elasticbeanstalk.com/
+          uri: lb://AUTHRIZATIONSERVER
           predicates:
             - Path=/auth/**
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      orderCircuitBreaker:
+        registerHealthIndicator: true
+        permittedNumberOfCallsInHalfOpenState: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
+
 
 eureka:
   client:
     serviceUrl:
-      defaultZone:  ${EUREKA_URI:http://3.91.211.119/eureka}
+      defaultZone:  ${EUREKA_URI:http://localhost:8761/eureka}
+
+
+logging:
+  level:
+    com.eshopping.apigateway: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+server:
+  port: 9000
