@@ -33,10 +33,10 @@ resilience4j:
         registerHealthIndicator: true
         permittedNumberOfCallsInHalfOpenState: 3
         failureRateThreshold: 50
-        waitDurationInOpenState: 30s
+        waitDurationInOpenState: 50s
         automaticTransitionFromOpenToHalfOpenEnabled: true
         slidingWindowSize: 10
-        slidingWindowType: TIME_BASED
+        slidingWindowType: COUNT_BASED
 
 
 eureka:
